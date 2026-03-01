@@ -2,8 +2,6 @@
  * An interface for the iterator class
  */
 public interface Iterator<T> {
-    
-
 
     /**
      * 
@@ -16,4 +14,5 @@ public interface Iterator<T> {
      * @return element of type T that iterator passes over
      */
     public T next();
+
 }

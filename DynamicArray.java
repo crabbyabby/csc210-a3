@@ -1,5 +1,7 @@
 //import javax.management.RuntimethrowException;
 
+import java.util.NoSuchElementException;
+
 /**
  * DynamicArray is a list-like data structure that stores elements in a backing array.
  * The DynamicArray holds a reference to the backing array.
@@ -353,15 +355,91 @@ public class DynamicArray<T> implements ListADT<T>{
             return returned;
         }
     }
+
+    /**
+     * 
+     * @return
+     */
     public Iterator<T> iterator() {
-        return new SLLIterator();
+        return new ArrayIterator();
     }
 
-    private class SLLIterator implements Iterator<T> {
-        public boolean hasNext() { /* ... */ }
-        public T next() { /* ... */ }
+    /**
+     *  ArrayIterator that is index-based implementation of iterator
+     * Implements general iterator functionality
+     */
+    private class ArrayIterator implements Iterator<T> {
+
+        //Attributes
+        private int index;
+
+        /**
+         * Constructor for ArrayIterator class
+         * Starts iterator at index 0
+         */
+        ArrayIterator() {
+            this.index = 0;
+        }
+
+        /**
+         * Method to check if there is a next element
+         * @return boolean of if there is a next element
+         */
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        /**
+         * Moves iterator through DynamicArray and returns passed element
+         * @return element of type T 
+         */
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No next element");
+            }
+            index++;
+            return data[index-1];
+        }
     }
 
+    /**
+     * Splits DynamicArray from given index to end
+     * Copy style so does not impact original DynamicArray
+     * @param index where DynamicArray is split at
+     * @return new split DynamicArray 
+     */
+    public DynamicArray<T> splitCopy(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException("Invalid index.");
+        }
+        DynamicArray<T> tail = new DynamicArray<T>(this.size - index);
+        for (int i = index; i < this.size; i++) {
+            tail.add(this.data[i]);
+        }
+        return tail;
+    }
+
+    /**
+     * Splits DynamicArray from given index to end
+     * Transfer style so impacts original DynamicArray,
+     * which is shortened from element 0 to index
+     * @param index where DynamicArray is split at
+     * @return new split DynamicArray from index to end
+     */
+    public DynamicArray<T> splitTransfer(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException("Invalid index.");
+        }
+        DynamicArray<T> tail = new DynamicArray<>(this.size - index);
+        int tailSize = this.size - index;
+
+        for (int i = 0; i < tailSize; i++) {
+            tail.data[i] = this.data[index + i];
+        }
+        tail.size = tailSize;
+        this.size = index;
+        return tail;
+    }
 }
 
 

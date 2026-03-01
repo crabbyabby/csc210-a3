@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 /**
  * Class to implement a singly linked list
  * Singly linked list is a collection of nodes, with each
@@ -170,25 +172,27 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
      * @throws IllegalStateException if list is empty
      */
     public T remove(int index) {
-        if (index < 0 || index >= this.size){
+        if (index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException("Invalid index");
-        } else if (size < 0) {
-            throw new IllegalStateException("Operation invalid in current state");
-        } else {
-            NodeSL<T> returned = getNode(index);
-
-            if (index == size-1){
-                NodeSL<T> node = getNode(index-1);
-                node.setNext(null);
-            } else {
-                NodeSL<T> before = getNode(index-1);
-                NodeSL<T> after = getNode(index + 1);
-                before.setNext(after);
-            }
-
-            this.size -= 1;
-            return returned.getData();
         }
+        if (this.size == 0) {
+            throw new IllegalStateException("Operation invalid in current state");
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+
+        NodeSL<T> returned = getNode(index);
+        if (index == size - 1) {
+            NodeSL<T> node = getNode(index - 1);
+            node.setNext(null);
+        } else {
+            NodeSL<T> before = getNode(index - 1);
+            NodeSL<T> after = getNode(index + 1);
+            before.setNext(after);
+        }
+        this.size -= 1;
+        return returned.getData();
     }
     
 
@@ -344,25 +348,103 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
         return target.getData();
     }
 
+    /**
+     * Creates a fresh iterator
+     * @return new iterator of type T for single linked lists
+     */
     public Iterator<T> iterator() {
         return new SLLIterator();
     }
 
+    /**
+     * Private class for iterator for singly linked list
+     * Implements general iterator functionality
+     */
     private class SLLIterator implements Iterator<T> {
-        private int index;
 
-        private SLL<T> listSLL;
+        // Attributes
+        private NodeSL<T> current;
 
-        SLLIterator(){
-            this.index = 0;
+        /**
+         * Constructor for singly linked list iterator
+         * Starts the iterator at the head
+         */
+        SLLIterator() {
+            this.current = SLL.this.head;
         }
 
+        /**
+         * Method that returns if there is a node after
+         * @return boolean of if there is a next node
+         */
         public boolean hasNext() {
-            return (index < listSLL.size());
+            return current.getNext() != null;
         }
 
+        /**
+         * Method that iterates to next node and returns passed node data 
+         * @return data of type T stored in passed node
+         */
         public T next() {
-            return
+            if (!hasNext()) {
+                throw new NoSuchElementException("No next element");
+            }
+            T value = current.getData();
+            current = current.getNext();
+            return value;
         }
-}
+    }
+
+    /**
+     * Splits SLL from given node to end
+     * Copy style so does not impact original SLL
+     * @param index the node that SLL is split at
+     * @return new split SLL 
+     */
+    public SLL<T> splitCopy(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+        SLL<T> tail = new SLL<>();
+        NodeSL<T> node = this.head;
+
+        for (int i = 0; i < index && node != null; i++) {
+            node = node.getNext();
+        }
+        while (node != null) {
+            tail.addLast(node.getData());
+            node = node.getNext();
+        }
+        return tail;
+    }
+
+    /**
+     *  Splits SLL from given node to end
+     * Transfer style so impacts original SLL,
+     * which is shortened from node 0 to index
+     * @param index the node where SLL is split at
+     * @return new split SLL from index node to end
+     */
+    public SLL<T> splitTransfer(int index) {
+        if (index < 0 || index > this.size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+        SLL<T> tail = new SLL<T>();
+        if (index == this.size) {
+            return tail;
+        }
+        if (index == 0) {
+            tail.head = this.head;
+            tail.size = this.size;
+            this.head = null;
+            this.size = 0;
+            return tail;
+        }
+        NodeSL<T> previous = getNode(index - 1);
+        tail.head = previous.getNext();
+        tail.size = this.size - index;
+        previous.setNext(null);
+        this.size = index;
+        return tail;
+    }
 }
