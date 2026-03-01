@@ -378,7 +378,7 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
          * @return boolean of if there is a next node
          */
         public boolean hasNext() {
-            return current.getNext() != null;
+            return current != null;
         }
 
         /**
@@ -405,16 +405,30 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
         if (index < 0 || index > this.size) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
-        SLL<T> tail = new SLL<>();
         NodeSL<T> node = this.head;
-
         for (int i = 0; i < index && node != null; i++) {
             node = node.getNext();
         }
-        while (node != null) {
-            tail.addLast(node.getData());
-            node = node.getNext();
+
+        if (node == null) {
+            return new SLL<T>();
         }
+        NodeSL<T> newHead = new NodeSL<T>(node.getData(), null);
+        NodeSL<T> current = newHead;
+        node = node.getNext();
+        int newSize = 1;
+        
+        while (node != null) {
+            NodeSL<T> newNode = new NodeSL<T>(node.getData(), null);
+            current.setNext(newNode);
+            current = newNode;
+            node = node.getNext();
+            newSize++;
+        }
+        
+        SLL<T> tail = new SLL<T>();
+        tail.head = newHead;
+        tail.size = newSize;
         return tail;
     }
 
@@ -429,11 +443,13 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
         if (index < 0 || index > this.size) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
-        SLL<T> tail = new SLL<T>();
+
         if (index == this.size) {
+            SLL<T> tail = new SLL<T>();
             return tail;
         }
         if (index == 0) {
+            SLL<T> tail = new SLL<T>();
             tail.head = this.head;
             tail.size = this.size;
             this.head = null;
@@ -441,6 +457,7 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
             return tail;
         }
         NodeSL<T> previous = getNode(index - 1);
+        SLL<T> tail = new SLL<T>();
         tail.head = previous.getNext();
         tail.size = this.size - index;
         previous.setNext(null);
