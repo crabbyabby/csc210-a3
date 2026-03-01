@@ -415,9 +415,12 @@ public class DynamicArray<T> implements ListADT<T>{
         if (index < 0 || index > this.size) {
             throw new IndexOutOfBoundsException("Invalid index.");
         }
+        if (index == this.size) {
+            return new DynamicArray<T>(0);
+        }
         DynamicArray<T> tail = new DynamicArray<T>(this.size - index);
         for (int i = index; i < this.size; i++) {
-            tail.add(this.data[i]);
+            tail.data[i - index] = this.data[i];
         }
         return tail;
     }
@@ -433,6 +436,21 @@ public class DynamicArray<T> implements ListADT<T>{
         if (index < 0 || index > this.size) {
             throw new IndexOutOfBoundsException("Invalid index.");
         }
+
+        if (index == 0) {
+            DynamicArray<T> tail = new DynamicArray<T>(this.size);
+            for (int i = 0; i < this.size; i++) {
+                tail.data[i] = this.data[i];
+                this.data[i] = null;
+            }
+            tail.size = this.size;
+            this.size = 0;
+            return tail;
+        }
+        if (index == this.size) {
+            return new DynamicArray<T>(0);
+        }
+
         DynamicArray<T> tail = new DynamicArray<>(this.size - index);
         int tailSize = this.size - index;
 

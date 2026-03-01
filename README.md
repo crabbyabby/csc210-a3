@@ -4,7 +4,7 @@
 
 Your name: Abigail Lei
 
-Other students you worked with, including TAs: Esther, Claire
+Other students you worked with, including TAs: Esther, Claire, Michelle
 
 If anyone was particularly helpful, please give them a shout-out here:
 

@@ -449,8 +449,7 @@ public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
         }
 
         if (index == this.size) {
-            SLL<T> tail = new SLL<T>();
-            return tail;
+            return new SLL<T>();
         }
 
         if (index == 0) {
