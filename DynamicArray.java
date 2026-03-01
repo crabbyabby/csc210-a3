@@ -20,6 +20,9 @@ public class DynamicArray<T> implements ListADT<T>{
     private int size;
     private T[] data;
 
+    public DynamicArray() {
+        this(10);  
+    }
     /**
      * Constructs a new DynamicArray with a specific capacity.
      * Sets the size to 0 as it always initiates empty, creates backing array

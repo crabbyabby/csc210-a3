@@ -15,6 +15,7 @@ Any references or resources used besides JavaDoc and course materials:
 https://stackoverflow.com/questions/1816458/getting-hold-of-the-outer-class-object-from-the-inner-class-object
 
 If you used generative AI, how did you use it? What role did it play in your learning?
+Used AI to figure out why code wouldn't compile in autograder when it did in VSCode & what the error was in Timer.java
 
 
 ## Questions to Answer
