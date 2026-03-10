@@ -1,6 +1,7 @@
 //import javax.management.RuntimethrowException;
 
 import java.util.NoSuchElementException;
+import java.util.Iterator;
 
 /**
  * DynamicArray is a list-like data structure that stores elements in a backing array.
@@ -13,7 +14,7 @@ import java.util.NoSuchElementException;
  * 
  * @author Abigail Lei
  */
-public class DynamicArray<T> implements ListADT<T>{
+public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
 
     // Attributes
     private int capacity;

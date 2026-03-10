@@ -1,4 +1,5 @@
 import java.util.NoSuchElementException;
+import java.util.Iterator;
 
 /**
  * Class to implement a singly linked list
