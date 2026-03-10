@@ -10,7 +10,10 @@ public class Timer {
     private static final int REPS = 500;
     private static final int WARMUP = 200;
 
-    public static void main(String[] args) {
+    /**
+     * Benchmark test for iterators
+     * @param args arguments
+     */    public static void main(String[] args) {
         System.out.println("Copy vs Transfer Split (lightweight benchmark)");
         System.out.println("Each timing is an average over " + REPS + " ops.");
         System.out.println("Note: sub-100 ns timings are noisy; focus on trends.\n");

@@ -21,6 +21,10 @@ public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
     private int size;
     private T[] data;
 
+    /**
+     * Empty constructor for Dynamic Array
+     * Sets capacity size to 10
+     */
     public DynamicArray() {
         this(10);  
     }
@@ -72,7 +76,7 @@ public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
      * Accessor for the size of the array.
      * @return int of the arrays size
      */
-    public int size(){
+    public int size() {
         return this.size;
     }
 
@@ -80,11 +84,11 @@ public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
      * Method that tells us if the array is empty or not
      * @return true if the array's size is 0, false if it is greater than 0
      */
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         if (size() == 0){
             return true;
         }
-        else{
+        else {
             return false;
         }      
     }
@@ -361,8 +365,8 @@ public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
     }
 
     /**
-     * 
-     * @return
+     * Method to return a new iterator for arrays
+     * @return a new iterator
      */
     public Iterator<T> iterator() {
         return new ArrayIterator();
@@ -423,6 +427,7 @@ public class DynamicArray<T> implements ListADT<T>, Iterable<T>{
         for (int i = index; i < this.size; i++) {
             tail.data[i - index] = this.data[i];
         }
+        tail.size = this.size - index;
         return tail;
     }
 
