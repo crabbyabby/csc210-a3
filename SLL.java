@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * @author Abigail Lei
  * @version Spring 2026
  */
-public class SLL<T> implements ListADT<T>, NodeBasedOps<T>{
+public class SLL<T> implements ListADT<T>, NodeBasedOps<T>, Iterable<T>{
 
     // Attributes
     private NodeSL<T> head;
